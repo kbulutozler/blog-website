@@ -1,6 +1,6 @@
 ## Detecting Incivil Language in the Internet with Transformers (BERT)
 
-The internet has lots of incivil language use since the age of forums. This tool basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This tool has 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The code, the results and the paper will be provided.
+The internet has lots of incivil language use since the age of forums. This tool basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This tool has 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/)
 
 ### Task
 
@@ -8,18 +8,13 @@ Incivil language detection is basically a text classification task in NLP. The i
 
 ### Simple Approach
 
-Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. There are multiple versions of how to transfer knowledge learnt in one task to another task. The version applied in this work can be summed up as:
+Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. Simple approach is basically fine tuning BERT. BERT is taken and a fully connected layer on top of it is added. That fully connected layer has a softmax layer that will give the binary classification prediction. The image below is a summary. We can think of the outcome positive as incivility exists, negative as incivility does not exist. 
 
-- Prepare the dataset and task
-- Get a widely used pre-trained model
-- Adjust the model according to the task (fine-tune)
-- Set the hyperparameters
-- Train the model (weights actually)
-- Test the model and report the results
+![alt text](https://github.com/kbulutozler/blog-website/blob/main/image.jpg)
 
 ### Multi Domain Approach
 
-Multidomain approach is also based on transfer learning with pre-trained language model. The goal is to research how dataset characteristics and annotation differences affects the robustness of the predictions when the datasets are used together. Domain can affect the content and the quality of the data. Some hypothetical domain examples to make the word “domain” clearer:
+This approach is based on simple approach, but using multiple datasets from different domains. Multidomain approach is also based on transfer learning with pre-trained language model. The goal is to research how dataset characteristics and annotation differences affects the robustness of the predictions when the datasets are used together. Domain can affect the content and the quality of the data. Some hypothetical domain examples to make the word “domain” clearer:
 
 - 3 datasets about same topic (i.e. racism): one of them consists of tweets from Twitter, one of them consists of posts from Facebook, one of them consists of comments from a white supremacist forum. Each of the datasets represent a domain because even if the topic is same, the samples will be different based on:
   - each platform has its own slang/lingo
@@ -80,6 +75,27 @@ And some civil examples which does not have name-calling:
 
 "Strawberry Swing As an editor with a history of personal attacks and of creating attack pages, I disagree that it wasn't appropriate."
 ```
+Data can be provided upon request from Steven Bethard from University of Arizona Information Department.
+
+### Application
+
+#### Source Code
+The source code is used from for a version (0.6.1) of transformers repository. My modified version of the original code can be found from my own [repository](https://github.com/kbulutozler/BERT-multilabel-classification). transformers repository from huggingface is publicly available with all its versions on github.
+
+#### Training
+Once you clone the repository, only run_classifier_custom.py file is enough. The command should specify following parameters:
+- data_dir
+- bert_model: for fine tuning, use bert-base, for using already fine tuned model (multi domain approach), give the directory of said model
+- task_name: give sst-2
+- output_dir
+- cache_dir
+- max_seq_length: try 128 or 256
+- train_batch_size: try 16, 32, 64 or 128
+- learning_rate: try 8e-6, 2e-5, 4e-5 or 8e-5
+- num_train_epochs: try 2, 3, 4, 5, 6 or 8
+
+This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, 
+
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
