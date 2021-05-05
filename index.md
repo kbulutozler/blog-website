@@ -1,8 +1,12 @@
-## Welcome to GitHub Pages
+## Detecting Incivil Language in the Internet with Transformers (BERT)
 
-You can use the [editor on GitHub](https://github.com/kbulutozler/blog-website/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The internet has lots of incivil language use since the age of forums. This tool basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This tool has 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The code, the results and the paper will be provided.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Task
+
+Incivil language detection is basically a text classification task in NLP. The input is a piece of text, the output is a label. In the case of binary classification, the label is either 0 (no incivility) or 1 (yes incivility). In the case of multi label classification (not in this blog post, but in the shared paper), the output is a binary vector where ith element of the vector is 1 if the given input contains ith type of incivility (namecalling, vulgarity, threat etc.). The function to be aimed to learn in this task is h(repr(x) = y. repr(x) is a tensor representing the input(a series of word vectors), y is the output vector. 
+
+### Simple Approach
 
 ### Markdown
 
@@ -28,10 +32,3 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kbulutozler/blog-website/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
