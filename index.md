@@ -64,21 +64,21 @@ A small subset of the 3 million English Tweets written by Russian trolls. Only o
 Since only 1 label (name-calling) is common in all 3 datasets, first dataset is adjusted to be used only for name-calling label. Some name-calling examples:
 
 ```markdown
-_"You pathetic, pimple-faced little adolescent moron. Have you not studied sarcasm yet? \n\nLet me guess...you are a product of home schooling, right?"_
+"You pathetic, pimple-faced little adolescent moron. Have you not studied sarcasm yet? \n\nLet me guess...you are a product of home schooling, right?"
 
-_"Canada doesn’t need another CUCK! We already have enough #LooneyLeft #Liberals f**king up our great country! #Qproofs #TrudeauMustGo"_
+"Canada doesn’t need another CUCK! We already have enough #LooneyLeft #Liberals f**king up our great country! #Qproofs #TrudeauMustGo"
 
-_"if yo girl doesnt swallow kids, that bitch basic!"_
+"if yo girl doesnt swallow kids, that bitch basic!"
 ```
 
 And some civil examples which does not have name-calling:
 
 ```markdown
-_"im genuinely getting mad at this children's video game about mickey mouse and darkness and big keys"_
+"im genuinely getting mad at this children's video game about mickey mouse and darkness and big keys"
 
-_"please advice about Bank nifty & how the NPA will benefit for PSU Banks ?"_
+"please advice about Bank nifty & how the NPA will benefit for PSU Banks ?"
 
-_"Strawberry Swing As an editor with a history of personal attacks and of creating attack pages, I disagree that it wasn't appropriate."_
+"Strawberry Swing As an editor with a history of personal attacks and of creating attack pages, I disagree that it wasn't appropriate."
 ```
 ### Markdown
 
