@@ -8,13 +8,24 @@ Incivil language detection is basically a text classification task in NLP. The i
 
 ### Simple Approach
 
-Language model based transfer learning is the basis for all the research has been done in this graduation project. Due to its huge impact in transfer learning in NLP, BERT has been used. There are multiple versions of how to transfer knowledge learnt in one task to another task. The version applied in this project can be summed up as:
+Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. There are multiple versions of how to transfer knowledge learnt in one task to another task. The version applied in this work can be summed up as:
 - Prepare the dataset and task
 - Get a widely used pre-trained model
 - Adjust the model according to the task (fine-tune)
 - Set the hyperparameters
 - Train the model (weights actually)
 - Test the model and report the results
+
+### Multi Domain Approach
+
+Multidomain approach is also based on transfer learning with pre-trained language model. The goal is to research how dataset characteristics and annotation differences affects the robustness of the predictions when the datasets are used together. Domain can affect the content and the quality of the data. Some hypothetical domain examples to make the word “domain” in this graduation project clearer:
+
+- 3 datasets about same topic (i.e. racism): one of them consists of tweets from Twitter, one of them consists of posts from Facebook, one of them consists of comments from a white supremacist forum. Each of the datasets represent a domain because even if the topic is same, the samples will be different based on:
+  - each platform has its own slang/lingo
+  - user groups have different backgrounds
+- 2 datasets from same platform (i.e. twitter): one of them is about namecalling, other one is about misogyny. Each of them represent a domain based on:
+  - namecalling can contain common misogyny terms but not necessarily
+  - misogyny can contain common namecalling terms but not necessarily
 
 ### Markdown
 
