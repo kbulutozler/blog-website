@@ -9,12 +9,12 @@ Incivil language detection is basically a text classification task in NLP. The i
 ### Simple Approach
 
 Language model based transfer learning is the basis for all the research has been done in this graduation project. Due to its huge impact in transfer learning in NLP, BERT has been used. There are multiple versions of how to transfer knowledge learnt in one task to another task. The version applied in this project can be summed up as:
-• Prepare the dataset and task
-• Get a widely used pre-trained model
-• Adjust the model according to the task (fine-tune)
-• Set the hyperparameters
-• Train the model (weights actually)
-• Test the model and report the results
+- Prepare the dataset and task
+- Get a widely used pre-trained model
+- Adjust the model according to the task (fine-tune)
+- Set the hyperparameters
+- Train the model (weights actually)
+- Test the model and report the results
 
 ### Markdown
 
