@@ -1,3 +1,4 @@
 theme: jekyll-theme-hacker
-title: Detecting Incivil Language in the Internet with Transformers
-description: A blog page that outlines how to do text classification with pre-trained language model BERT in the domain of incivil language
+title: Detecting Incivil Language with Transformers
+description: A blog page that outlines how to do text classification with pre-trained language model BERT in the domain of incivil language in the internet
+author: @kbulutozler
