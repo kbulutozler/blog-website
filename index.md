@@ -8,7 +8,7 @@ Incivil language detection is basically a text classification task in NLP. The i
 
 ### Simple Approach
 
-- 1 classifier is fine-tuned for each domain, then evaluated on test data of its own domain
+- 1 classifier is fine-tuned on the training data of each domain, then evaluated on test data of its own domain
 
 Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. Simple approach is basically fine tuning BERT. BERT is taken and a fully connected layer on top of it is added. That fully connected layer has a softmax layer that will give the binary classification prediction. The image below is a summary. We can think of the outcome positive as incivility exists, negative as incivility does not exist. 
 
@@ -94,10 +94,10 @@ Once you clone the repository, only run_classifier_custom.py file is enough. The
 - do_train: if you are training, include this in the command
 - do_eval: if you are gonna do evaluation, include this in the command
 
-This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, you can use different datasets by adjusting train-dev-test combinations. Some examples you can apply:
-- use train and dev data of domain A, find your best model, evaluate it on test data of domain A, to do simple approach.
+This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, you can use different datasets by adjusting train-dev-test combinations. Some examples you can reproduce:
+- use train and dev data of domain A (e.g. Russian troll Tweets), find your best model, evaluate it on test data of domain A (e.g. Russian troll Tweets), to do simple approach.
   - use do_train and do_eval 
-- combine train and dev data of domains A and B, find your best model, evaluate it on test data of each domain, to inspect multi domain approach.
+- combine train and dev data of domains A (e.g. Russian troll Tweets), B (e.g. Local Politics Tweets) and C (e.g. Local news comments), find your best model by using dev data, evaluate it on test data of a domain (e.g. Local news comments), to inspect multi domain approach.
   - use do_train and do_eval 
 
 #### Some details from code
