@@ -1,6 +1,6 @@
 ## Detecting Incivil Language in the Internet with Transformers (BERT)
 
-The internet has lots of incivil language use since the age of forums. This tool basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This tool has 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/)
+The internet has lots of incivil language use since the age of forums. This blog post basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This blog contains 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/).
 
 ### Task
 
@@ -94,29 +94,28 @@ Once you clone the repository, only run_classifier_custom.py file is enough. The
 - learning_rate: try 8e-6, 2e-5, 4e-5 or 8e-5
 - num_train_epochs: try 2, 3, 4, 5, 6 or 8
 
-This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, 
+This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, you can use different datasets by adjusting train-dev-test combinations. Some examples you can apply:
+- use train and dev data of domain A, find your best model, evaluate it on test data of domain A, to do simple approach.
+- combine train and dev data of domains A and B, find your best model, evaluate it on test data of each domain, to inspect multi domain approach.
 
-### Markdown
+#### Some details from code
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
+In this piece of code, the tokenizer is loaded from the bert model we specified. 
 ```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+`Code` tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+In this piece of code, the model is loaded from the bert model we specified. 
+```markdown
 
+`Code` model = BertForSequenceClassification.from_pretrained(args.bert_model,
+`Code`              cache_dir=cache_dir,
+`Code`              num_labels = num_labels)
+
+```
+
+### Results
+
+### Conclusion
