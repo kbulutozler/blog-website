@@ -10,7 +10,7 @@ Incivil language detection is basically a text classification task in NLP. The i
 
 Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. Simple approach is basically fine tuning BERT. BERT is taken and a fully connected layer on top of it is added. That fully connected layer has a softmax layer that will give the binary classification prediction. The image below is a summary. We can think of the outcome positive as incivility exists, negative as incivility does not exist. 
 
-<img src="“images/image.jpg”" alt="hi" class="inline"/>
+![image](/images/image.jpg)
 
 ### Multi Domain Approach
 
