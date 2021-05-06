@@ -77,7 +77,7 @@ Data can be provided upon request from Steven Bethard from University of Arizona
 In this section, I gave some reproducible examples. After reading this section, go to results section to see the hyperparameters I used and the results I got with those exact hyperparameters. 
 
 #### Source Code
-The source code is used from for a version (0.6.1) of transformers repository. My modified version of the original code can be found from my own [repository](https://github.com/kbulutozler/BERT-multilabel-classification). transformers repository from huggingface is publicly available with all its versions on github.
+The source code is used from for a version (0.6.1) of transformers repository. My modified version of the original code can be found from my own [repository](https://github.com/kbulutozler/BERT-multilabel-classification). transformers repository from huggingface and its dependencies according to version are publicly available for its versions on [here](https://github.com/huggingface/transformers/). 
 
 #### Training and Evaluation
 Once you clone the repository, only run_classifier_custom.py file is enough. The command should specify following parameters:
