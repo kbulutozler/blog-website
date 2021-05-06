@@ -1,4 +1,4 @@
-## Detecting Incivil Language in the Internet with Transformers (BERT)
+### Introduction
 
 The internet has lots of incivil language use since the age of forums. This blog post basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This blog contains 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. Usually in text classification blogs, fine tuning in one domain is being explained. What makes this blog post unique is that not only it explains fine tuning, it also explains how and why multi domain approach is used. The tool in this blog post can only be used for English language. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/).
 
