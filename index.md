@@ -1,6 +1,6 @@
 ## Detecting Incivil Language in the Internet with Transformers (BERT)
 
-The internet has lots of incivil language use since the age of forums. This blog post basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This blog contains 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/).
+The internet has lots of incivil language use since the age of forums. This blog post basically uses a pre trained language model to detect incivil languages in the internet posts like tweets and comments. This blog contains 2 different approaches, simple and multi domain. In the simple approach, the model is fine tuned to binary classify incivil language in the dataset. In multi domain approach, the datasets from multiple domains are used to make the model more robust for detecting incivil language bits from different domains. Usually in text classification blogs, fine tuning in one domain is being explained. What makes this blog post unique is that not only it explains fine tuning, it also explains how and why multi domain approach is used. The tool in this blog post can only be used for English language. The original paper can be found [here](https://www.aclweb.org/anthology/2020.alw-1.4/).
 
 ### Task
 
@@ -8,13 +8,20 @@ Incivil language detection is basically a text classification task in NLP. The i
 
 ### Simple Approach
 
+- 1 classifier is fine-tuned for each domain, then evaluated on test data of its own domain
+
 Language model based transfer learning is the basis for all the work in this blog post. Due to its huge impact in transfer learning in NLP, BERT has been used. Simple approach is basically fine tuning BERT. BERT is taken and a fully connected layer on top of it is added. That fully connected layer has a softmax layer that will give the binary classification prediction. The image below is a summary. We can think of the outcome positive as incivility exists, negative as incivility does not exist. 
 
 ![image](/images/image.jpg)
 
+
 ### Multi Domain Approach
 
-This approach is based on simple approach, but using multiple datasets from different domains. Multidomain approach is also based on transfer learning with pre-trained language model. The goal is to research how dataset characteristics and annotation differences affects the robustness of the predictions when the datasets are used together. Domain can affect the content and the quality of the data. Some hypothetical domain examples to make the word “domain” clearer:
+- 1 classifier is fine-tuned on the combined training data from different domains, then evaluated on test data of each domain
+
+This approach is based on simple approach, but using multiple datasets from different domains. Multidomain approach is also based on transfer learning with pre-trained language model. The goal is to research how dataset characteristics and annotation differences affects the robustness of the predictions when the datasets are used together. Domain can affect the content and the quality of the data. 
+
+Some hypothetical domain examples to make the word “domain” clearer:
 
 - 3 datasets about same topic (i.e. racism): one of them consists of tweets from Twitter, one of them consists of posts from Facebook, one of them consists of comments from a white supremacist forum. Each of the datasets represent a domain because even if the topic is same, the samples will be different based on:
   - each platform has its own slang/lingo
@@ -25,18 +32,6 @@ This approach is based on simple approach, but using multiple datasets from diff
   - misogyny can contain common namecalling terms but not necessarily
 
 The idea is that if we use datasets together, the classifier will benefit from variety of samples and robustness will increase. For example, twitter dataset has several samples that is actually racist, but the slang used in these samples is not commonly seen in the majority of the twitter dataset. Let’s say that particular slang exists in facebook and/or forum datasets. When the classifier is trained in all of the datasets, meaning the classifier is exposed to that particular slang more than the twitter data has, and when the classifier is tested on twitter dataset, it’s expected that its chances to detect that particular racist samples will increase.
-
-Three methods are considered for training classifiers for prediction in multiple domains:
-- Single
-  - 1 classifier is fine-tuned for each domain
-  - This is basically the simple approach above
-  - This will be comparison baseline
-- Joint
-  - 1 classifier is fine-tuned on the combined training data from all domains
-- Joint + Single
-  - A joint classifier is fine-tuned
-  - 1 single classifier for each domain is initialized by using parameters of the joint classifier
-  - Those single classifiers are fine-tuned
 
 ### Data
 
@@ -79,12 +74,15 @@ Data can be provided upon request from Steven Bethard from University of Arizona
 
 ### Application
 
+In this section, I gave some reproducible examples. After reading this section, go to results section to see the hyperparameters I used and the results I got with those exact hyperparameters. 
+
 #### Source Code
 The source code is used from for a version (0.6.1) of transformers repository. My modified version of the original code can be found from my own [repository](https://github.com/kbulutozler/BERT-multilabel-classification). transformers repository from huggingface is publicly available with all its versions on github.
 
-#### Training
+#### Training and Evaluation
 Once you clone the repository, only run_classifier_custom.py file is enough. The command should specify following parameters:
-- data_dir
+- train_dir
+- eval_dir
 - bert_model: for fine tuning, use bert-base, for using already fine tuned model (multi domain approach), give the directory of said model
 - task_name: give sst-2
 - output_dir
@@ -93,28 +91,80 @@ Once you clone the repository, only run_classifier_custom.py file is enough. The
 - train_batch_size: try 16, 32, 64 or 128
 - learning_rate: try 8e-6, 2e-5, 4e-5 or 8e-5
 - num_train_epochs: try 2, 3, 4, 5, 6 or 8
+- do_train: if you are training, include this in the command
+- do_eval: if you are gonna do evaluation, include this in the command
 
 This is basically fine tuning a language model by adjusting it to a binary classification task (sst-2) for a specific domain (see data section). As explained in the approach sections, you can use different datasets by adjusting train-dev-test combinations. Some examples you can apply:
 - use train and dev data of domain A, find your best model, evaluate it on test data of domain A, to do simple approach.
+  - use do_train and do_eval 
 - combine train and dev data of domains A and B, find your best model, evaluate it on test data of each domain, to inspect multi domain approach.
+  - use do_train and do_eval 
 
 #### Some details from code
 
-In this piece of code, the tokenizer is loaded from the bert model we specified. 
+The tokenizer is loaded from the bert model we specified. 
 ```markdown
-
 tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
-
 ```
 
-In this piece of code, the model is loaded from the bert model we specified. 
+The model is loaded from the bert model we specified. 
 ```markdown
 model = BertForSequenceClassification.from_pretrained(args.bert_model,
               cache_dir=cache_dir,
               num_labels = num_labels)
+```
 
+The optimizer is set as adam optimizer. 
+```markdown
+optimizer = BertAdam(optimizer_grouped_parameters,
+                             lr=args.learning_rate,
+                             warmup=args.warmup_proportion,
+                             t_total=num_train_optimization_steps)
+```
+
+The trained model is saved with weights and configuration information.
+```markdown
+# Save a trained model and the associated configuration
+model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
+output_model_file = os.path.join(args.output_dir, WEIGHTS_NAME)
+torch.save(model_to_save.state_dict(), output_model_file)
+output_config_file = os.path.join(args.output_dir, CONFIG_NAME)
+with open(output_config_file, 'w') as f:
+    f.write(model_to_save.config.to_json_string())
+```
+
+The results are calculated with the function acc_prec_recall_f1.
+```markdown
+result = acc_prec_recall_f1(preds, out_label_ids)
+```
+
+The results are written with these lines:
+```markdown
+with open("preds_labels.txt","w") as writer2:
+            writer2.write("preds_labels\n")
+            for pred, label in zip(preds, out_label_ids):
+                line = str(pred) + " " + str(label) + '\n'
+                writer2.write(line)
 ```
 
 ### Results
 
+In the results, f1 score is considered. Here, the results were obtained with the models that has following hyperparameters. 
+- max_seq_length: 256
+- train_batch_size: 64
+- learning_rate: 4e-5
+- num_train_epochs: 4
+
+
+| Approach | Local news comments | Russian troll Tweets | Local politics Tweets |
+| ------------- | ------------- | ------------- | ------------- |
+| single  | 0.57  | 0.65  | 0.70  |
+| multi-domain  | 0.65  | 0.81  | 0.80  |
+
+Important note: For single, train-dev-test data is from each domain. For multi-domain, train-dev data is from all domains combined, test data is from each domain. 
+
+As you can see from the table, the multi-domain approach performed better on each domain in comparison to simple approach which only uses 1 domain. 
+
 ### Conclusion
+
+In this blog post, BERT is applied with single-domain and multi-domain approaches for an incivility detection task. The approaches have been explained, task has been defined in detail, data has been explained with examples, source code has been shared with versions, some significant parts of the code has been explained in snippets, results have been given, and the hyperparameters to recreate the experiments and how to access the data have been explained. Thank you for reading!
