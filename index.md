@@ -103,16 +103,15 @@ This is basically fine tuning a language model by adjusting it to a binary class
 In this piece of code, the tokenizer is loaded from the bert model we specified. 
 ```markdown
 
-`Code` tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
+tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
 
 ```
 
 In this piece of code, the model is loaded from the bert model we specified. 
 ```markdown
-
-`Code` model = BertForSequenceClassification.from_pretrained(args.bert_model,
-`Code`              cache_dir=cache_dir,
-`Code`              num_labels = num_labels)
+model = BertForSequenceClassification.from_pretrained(args.bert_model,
+              cache_dir=cache_dir,
+              num_labels = num_labels)
 
 ```
 
